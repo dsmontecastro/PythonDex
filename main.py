@@ -53,7 +53,7 @@ def on_key_press(symbol, mod):
     if symbol in key_shifts:
         scroll_bar.update_from_key(browser.top)
         update_scroll(key_shifts[symbol])
-    elif symbol == key.SPACE:
+    elif symbol == key.TAB:
         browser.update_favs()
     elif symbol == key.BACKSPACE:
         search_panel.handle_backspace()
@@ -62,8 +62,13 @@ def on_key_press(symbol, mod):
         current_pokemon = database.first().index
         information.update(database.first())
         browser.update_database(database)
-    elif str.isalpha(chr(symbol)):
-        search_panel.handle_char(chr(symbol))
+    elif symbol == key.SPACE:
+        search_panel.handle_char(" ")
+
+    else:
+        char = chr(symbol)
+        if str.isalnum(char):
+            search_panel.handle_char(char)
 
 @window.event
 def on_mouse_scroll(x, y, dx, dy):
