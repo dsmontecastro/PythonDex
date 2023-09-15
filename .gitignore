@@ -115,6 +115,4 @@ dmypy.json
 .pyre/
 
 # Pokemon images
-resources/pokemon/*
-old/
-sandbox/
+.vscode
