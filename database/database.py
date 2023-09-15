@@ -41,6 +41,7 @@ class DatabaseQuery:
         else:
             data_query = self.dataframe.loc[
                 (self.dataframe.type1 == type_1) & (self.dataframe.type2 == type_2)
+                | (self.dataframe.type1 == type_2) & (self.dataframe.type2 == type_1)
             ]
     
         return DatabaseQuery(data_query)
