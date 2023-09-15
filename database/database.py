@@ -1,8 +1,8 @@
 import csv
 import pandas as pd
 
-class DatabaseQuery():
 
+class DatabaseQuery:
     def __init__(self, dataframe):
         self.query = []
         self.dataframe = dataframe
@@ -28,21 +28,33 @@ class DatabaseQuery():
         data_query = self.dataframe.loc[self.dataframe.name.str.startswith(name.capitalize(), na=False)]
         return DatabaseQuery(data_query)
 
-    def filter_by_type(self, pokemon_type):
-        data_query = self.dataframe.loc[(self.dataframe.type1 == pokemon_type.lower()) | (self.dataframe.type2 == pokemon_type.lower())]
+    def filter_by_type(self, type_1, type_2):
+    
+        data_query = None
+    
+        if (type_2 == "none"):
+            data_query = self.dataframe.loc[
+                (self.dataframe.type1 == type_1)
+                | (self.dataframe.type2 == type_1)
+            ]
+    
+        else:
+            data_query = self.dataframe.loc[
+                (self.dataframe.type1 == type_1)
+                & (self.dataframe.type2 == type_2)
+            ]
+    
         return DatabaseQuery(data_query)
 
-    def filter_by_stat(self, stat):
-        data_query = self.dataframe.loc[(self.dataframe.hp         == pokemon_type.lower()) | (self.dataframe.attack    == pokemon_type.lower()) |
-                                        (self.dataframe.defense    == pokemon_type.lower()) | (self.dataframe.speed     == pokemon_type.lower()) |
-                                        (self.dataframe.sp_defense == pokemon_type.lower()) | (self.dataframe.sp_attack == pokemon_type.lower()) |
-                                        (self.dataframe.base_total == pokemon_type.lower()) ]
+    def filter_by_stat(self, stat, value):
+        data_query = self.dataframe.loc[ getattr(self.dataframe, stat) >= value ]
+        data_query = data_query.sort_values(by = stat, ascending = False)
         return DatabaseQuery(data_query)
 
     def filter_by_legendary(self, value):
         query = 0
-        if value == True: query = 1
-        data_query = self.dataframe.loc[(self.dataframe.is_legendary == query)]
+        if value >= True: query = 1
+        data_query = self.dataframe.loc[(self.dataframe.is_legendary >= query)]
         return DatabaseQuery(data_query)
 
     def index(self, key):
@@ -57,11 +69,13 @@ class DatabaseQuery():
         else:
             return False
 
-class DataRow():
 
+class DataRow:
     def __init__(self, serial):
         self.index = serial[0]
-        self.abilities = [i.strip("\'") for i in serial[1].strip('[').strip(']').split(',')]
+        self.abilities = [
+            i.strip("'") for i in serial[1].strip("[").strip("]").split(",")
+        ]
         self.against_bug = serial[2]
         self.against_dark = serial[3]
         self.against_dragon = serial[4]
@@ -104,7 +118,6 @@ class DataRow():
         self.is_legendary = serial[41]
 
 class Database(DatabaseQuery):
-
     def __init__(self, database="resources/data/data.csv"):
         self.database_address = database
         self.dataframe = pd.read_csv(self.database_address)
