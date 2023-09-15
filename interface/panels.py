@@ -77,7 +77,7 @@ class InformationPanel:
             batch=self.front,
         )
         self.label_abilities = p.text.Label(
-            "Abilities: {}".format(", ".join(self.data.abilities)),
+            "Abilities: {}".format(self.data.abilities),
             font_name="Power Clear",
             x=30,
             y=420,
@@ -172,9 +172,7 @@ class InformationPanel:
 
     def update_labels(self):
         self.label_name.text = "Name: {}".format(self.data.name)
-        self.label_abilities.text = "Abilities: {}".format(
-            " ".join(self.data.abilities)
-        )
+        self.label_abilities.text = "Abilities: {}".format(self.data.abilities)
         self.label_weight.text = "WT: {} kg".format(self.data.weight)
         self.label_height.text = "HT: {} m".format(self.data.height)
 

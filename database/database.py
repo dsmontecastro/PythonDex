@@ -40,8 +40,7 @@ class DatabaseQuery:
     
         else:
             data_query = self.dataframe.loc[
-                (self.dataframe.type1 == type_1)
-                & (self.dataframe.type2 == type_2)
+                (self.dataframe.type1 == type_1) & (self.dataframe.type2 == type_2)
             ]
     
         return DatabaseQuery(data_query)
@@ -73,9 +72,7 @@ class DatabaseQuery:
 class DataRow:
     def __init__(self, serial):
         self.index = serial[0]
-        self.abilities = [
-            i.strip("'") for i in serial[1].strip("[").strip("]").split(",")
-        ]
+        self.abilities = serial[1].lstrip("[").rstrip("]").replace("'", "").replace(",", ", ")
         self.against_bug = serial[2]
         self.against_dark = serial[3]
         self.against_dragon = serial[4]
