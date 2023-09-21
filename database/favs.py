@@ -3,10 +3,10 @@ from get_file import get_file
 
 class Favorites():
 
-    def __init__(self, file = "resources/data/fav.csv"):
+    def __init__(self, file = "favs.csv"):
 
         self.favs = set()
-        self.file = get_file(file)
+        self.file = file
     
         with open(self.file) as fav_file:
             csv_reader = csv.reader(fav_file)
@@ -15,6 +15,16 @@ class Favorites():
                     self.favs = self.favs.union(set([int(row[0])]))
                 except:
                     pass
+    
+        # self.file = get_file(file)
+    
+        # with open(self.file) as fav_file:
+        #     csv_reader = csv.reader(fav_file)
+        #     for row in csv_reader:
+        #         try:
+        #             self.favs = self.favs.union(set([int(row[0])]))
+        #         except:
+        #             pass
 
     def __iter__(self):
         return iter(self.favs)
