@@ -20,6 +20,7 @@ p.font.add_file(get_file("resources/fonts/pkmndp.ttf"))
 # Initialize windows
 config = p.gl.Config(sample_buffers=1, samples=8, double_buffer=True)
 window = p.window.Window(caption='PythonDex', width=width, height=height, config=config)
+window.set_icon(p.image.load(get_file("resources/tiles/logo.ico")))
 
 # Set blending modes
 p.gl.glEnable(p.gl.GL_BLEND)
