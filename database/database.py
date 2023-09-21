@@ -1,6 +1,8 @@
 import csv
 import pandas as pd
 
+from os import path
+
 
 class DatabaseQuery:
     def __init__(self, dataframe):
@@ -116,7 +118,7 @@ class DataRow:
         self.is_legendary = serial[41]
 
 class Database(DatabaseQuery):
-    def __init__(self, database="resources/data/data.csv"):
+    def __init__(self, database=path.join("resources/data/data.csv")):
         self.database_address = database
         self.dataframe = pd.read_csv(self.database_address)
         super().__init__(self.dataframe)
