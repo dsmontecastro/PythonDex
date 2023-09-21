@@ -32,3 +32,5 @@ Type in any alphanumeric character to fill in the searchbar above.
 * _Types_ - input any type or pair of to search for matching Pokemon.
 * _Stats_ - input any stat plus an optional number (default 0) to search for a descending list of Pokemon with at least that base-stat value.
   > Note: The __special__ stats are _sp\_attack_ or _sp\_defense_.
+
+Use `ESCAPE` or close the window to quit the program.
