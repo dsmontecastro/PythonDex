@@ -3,7 +3,7 @@ from pyglet.window import key
 from interface.processes import vertex_change
 
 from get_file import get_file
-from database.fav import Favorites
+from database.favs import Favorites
 from database.database import Database
 
 from interface.colors import Color
