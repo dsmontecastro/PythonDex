@@ -1,12 +1,13 @@
 import csv
-
-from os import path
+from get_file import get_file
 
 class Favorites():
 
-    def __init__(self):
+    def __init__(self, file = "resources/data/fav.csv"):
+
         self.favs = set()
-        self.file = path.join("resources/data/fav.csv")
+        self.file = get_file(file)
+    
         with open(self.file) as fav_file:
             csv_reader = csv.reader(fav_file)
             for row in csv_reader:

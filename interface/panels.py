@@ -1,5 +1,5 @@
 import pyglet as p
-from os import path
+from get_file import get_file
 
 from . import processes
 from .colors import Color
@@ -24,17 +24,17 @@ class InformationPanel:
 
         # Load initial type 1 and 2 background images and sprites
         self.background_1_image = p.image.load(
-            path.join("resources/backgrounds/{}.png".format(self.type_1))
+            get_file("resources/backgrounds/{}.png".format(self.type_1))
         )
 
         # Check if type_2 is a string or a NaN float
         if isinstance(self.type_2, str):
             self.background_2_image = p.image.load(
-                path.join("resources/backgrounds/{}.png".format(self.type_2))
+                get_file("resources/backgrounds/{}.png".format(self.type_2))
             )
         else:
             self.background_2_sprite.image = p.image.load(
-                path.join("resources/backgrounds/blank.png")
+                get_file("resources/backgrounds/blank.png")
             )
 
         self.background_1_sprite = p.sprite.Sprite(
@@ -51,13 +51,13 @@ class InformationPanel:
         # else, load png version
         try:
             self.pokemon_image = p.image.load(
-                path.join("resources/pokemon/{}.jpg".format(self.name.lower()))
+                get_file("resources/pokemon/{}.jpg".format(self.name.lower()))
             )
         except FileNotFoundError:
             pass
         try:
             self.pokemon_image = p.image.load(
-                path.join("resources/pokemon/{}.png".format(self.name.lower()))
+                get_file("resources/pokemon/{}.png".format(self.name.lower()))
             )
         except FileNotFoundError:
             raise FileNotFoundError("Invalid pokemon name.")
@@ -106,7 +106,7 @@ class InformationPanel:
         self.width = self.background_1_image.width
         self.height = self.background_1_image.height
 
-        self.hexagon_image = p.image.load(path.join("resources/tiles/stat_wheel.png"))
+        self.hexagon_image = p.image.load(get_file("resources/tiles/stat_wheel.png"))
         self.hexagon_image.anchor_x = int(self.hexagon_image.width / 2)
         self.hexagon_image.anchor_y = int(self.hexagon_image.height / 2)
         self.hexagon_sprite = p.sprite.Sprite(
@@ -116,7 +116,7 @@ class InformationPanel:
             batch=self.front,
         )
 
-        self.stats_image = p.image.load(path.join("resources/tiles/stat_names.png"))
+        self.stats_image = p.image.load(get_file("resources/tiles/stat_names.png"))
         self.stats_image.anchor_x = int(self.stats_image.width / 2) + 10
         self.stats_image.anchor_y = int(self.stats_image.height / 2)
         self.stats_sprite = p.sprite.Sprite(
@@ -142,30 +142,30 @@ class InformationPanel:
     def update_background_sprite(self):
         # Replace type_1 sprite background image
         self.background_1_sprite.image = p.image.load(
-            path.join("resources/backgrounds/{}.png".format(self.type_1))
+            get_file("resources/backgrounds/{}.png".format(self.type_1))
         )
 
         # Check if type_2 is a string or a NaN float
         # Made as an artifact of using pandas for data loading
         if isinstance(self.type_2, str):
             self.background_2_sprite.image = p.image.load(
-                path.join("resources/backgrounds/{}.png".format(self.type_2))
+                get_file("resources/backgrounds/{}.png".format(self.type_2))
             )
         else:
             self.background_2_sprite.image = p.image.load(
-                path.join("resources/backgrounds/blank.png")
+                get_file("resources/backgrounds/blank.png")
             )
 
     def update_pokemon_sprite(self):
         try:
             self.pokemon_image = p.image.load(
-                path.join("resources/pokemon/{}.jpg".format(self.data.name.lower()))
+                get_file("resources/pokemon/{}.jpg".format(self.data.name.lower()))
             )
         except FileNotFoundError:
             pass
         try:
             self.pokemon_image = p.image.load(
-                path.join("resources/pokemon/{}.png".format(self.data.name.lower()))
+                get_file("resources/pokemon/{}.png".format(self.data.name.lower()))
             )
         except FileNotFoundError:
             pass
@@ -231,16 +231,16 @@ class Browser:
         self.front = p.graphics.Batch()
 
         # Preload image tiles
-        self.select_active_image = p.image.load(path.join("resources/tiles/select_active.png"))
+        self.select_active_image = p.image.load(get_file("resources/tiles/select_active.png"))
         self.select_active_image.anchor_x = self.select_active_image.width // 2
         self.select_active_image.anchor_y = self.select_active_image.height // 2
-        self.select_inactive_image = p.image.load(path.join("resources/tiles/select_inactive.png"))
+        self.select_inactive_image = p.image.load(get_file("resources/tiles/select_inactive.png"))
         self.select_inactive_image.anchor_x = self.select_inactive_image.width // 2
         self.select_inactive_image.anchor_y = self.select_inactive_image.height // 2
-        self.star_active_image = p.image.load(path.join("resources/tiles/fav_active.png"))
+        self.star_active_image = p.image.load(get_file("resources/tiles/fav_active.png"))
         self.star_active_image.anchor_x = self.star_active_image.width // 2
         self.star_active_image.anchor_y = self.star_active_image.height // 2
-        self.star_inactive_image = p.image.load(path.join("resources/tiles/fav_inactive.png"))
+        self.star_inactive_image = p.image.load(get_file("resources/tiles/fav_inactive.png"))
         self.star_inactive_image.anchor_x = self.star_inactive_image.width // 2
         self.star_inactive_image.anchor_y = self.star_inactive_image.height // 2
 
@@ -290,7 +290,7 @@ class Browser:
             self.texts.append(
                 p.text.Label(
                     "{} - {}".format(
-                        processes.add0(self.database[i].index), self.database[i].name
+                        processes.add0(self.database[i].index + 1), self.database[i].name
                     ),
                     batch=self.front,
                     x=self.text_pos[0],
@@ -355,10 +355,12 @@ class Browser:
             target_database = (
                 target_database + self.database[self.top : self.bottom + 1]
             )
+
         for i in range(len(target_database)):
             self.texts[i].text = "{} - {}".format(
                 processes.add0(target_database[i].index), target_database[i].name
             )
+
             target_fav = self.top + i
             if target_fav > len(self.database) - 1:
                 target_fav = target_fav - len(self.database)
@@ -430,7 +432,7 @@ class SearchPanel:
             anchor_y="center",
         )
 
-        self.field_image = p.image.load(path.join("resources/tiles/select_inactive.png"))
+        self.field_image = p.image.load(get_file("resources/tiles/select_inactive.png"))
         self.field_image.anchor_x = self.field_image.width // 2
         self.field_image.anchor_y = self.field_image.height // 2
         self.field = p.sprite.Sprite(
@@ -515,7 +517,7 @@ class ScrollBar:
         self.maximum = up
         self.minimum = down
         self.ratio = len(database) / self.height
-        self.bar_img = p.image.load(path.join("resources/tiles/scroll_bar.png"))
+        self.bar_img = p.image.load(get_file("resources/tiles/scroll_bar.png"))
         self.bar_img.anchor_x = int(self.bar_img.width / 2)
         self.bar_img.anchor_y = int(self.bar_img.height / 2)
         self.bar = p.sprite.Sprite(self.bar_img, x=right - self.width / 2, y=up)

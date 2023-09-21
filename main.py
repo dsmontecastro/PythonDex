@@ -1,8 +1,11 @@
 import pyglet as p
 from pyglet.window import key
 from interface.processes import vertex_change
-from database.database import Database
+
+from get_file import get_file
 from database.fav import Favorites
+from database.database import Database
+
 from interface.colors import Color
 from interface.panels import InformationPanel, Browser, SearchPanel, ScrollBar
 
@@ -12,7 +15,7 @@ height = 480
 current_pokemon = 0
 database = Database()
 favorites = Favorites()
-p.font.add_file("resources/fonts/pkmndp.ttf")
+p.font.add_file(get_file("resources/fonts/pkmndp.ttf"))
 
 # Initialize windows
 config = p.gl.Config(sample_buffers=1, samples=8, double_buffer=True)

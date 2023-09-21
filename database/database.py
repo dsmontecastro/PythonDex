@@ -1,8 +1,6 @@
 import csv
 import pandas as pd
-
-from os import path
-
+from get_file import get_file
 
 class DatabaseQuery:
     def __init__(self, dataframe):
@@ -118,9 +116,11 @@ class DataRow:
         self.is_legendary = serial[41]
 
 class Database(DatabaseQuery):
-    def __init__(self, database=path.join("resources/data/data.csv")):
-        self.database_address = database
+    def __init__(self, file = "resources/data/data.csv"):
+
+        self.database_address = get_file(file)
         self.dataframe = pd.read_csv(self.database_address)
+
         super().__init__(self.dataframe)
 
     def get_indices_header(self):
